@@ -9,8 +9,7 @@ export default new Vuex.Store({
                 id: 1,
                 name: "Ferrari",
                 image: '~/assets/images/vehicles/00001.jpg',
-                price: "120",
-                no_of_sits: 4,
+                no_of_seats: 4,
                 model: "Toyota",
                 speed: "180 Km/hr",
                 fuel: "1000cc",
@@ -22,8 +21,7 @@ export default new Vuex.Store({
                 id: 2,
                 name: "Audi",
                 image: '~/assets/images/vehicles/00002.jpg',
-                price: "200",
-                no_of_sits: 4,
+                no_of_seats: 4,
                 model: "Nissan",
                 speed: "180 Km/hr",
                 fuel: "1000cc",
@@ -35,8 +33,7 @@ export default new Vuex.Store({
                 id: 3,
                 name: "Premio",
                 image: '~/assets/images/vehicles/00003.jpg',
-                price: "300",
-                no_of_sits: 4,
+                no_of_seats: 4,
                 model: "Toyota",
                 speed: "180 Km/hr",
                 fuel: "1000cc",
@@ -48,7 +45,6 @@ export default new Vuex.Store({
                 id: 4,
                 name: "Bugati",
                 image: '~/assets/images/vehicles/00004.jpg',
-                price: "400",
                 no_of_seats: 4,
                 model: "Nissan",
                 speed: "180 Km/hr",
@@ -61,8 +57,7 @@ export default new Vuex.Store({
                 id: 5,
                 name: "Demio",
                 image: '~/assets/images/vehicles/00005.jpg',
-                price: "500",
-                no_of_sits: 4,
+                no_of_seats: 4,
                 model: "Mazda",
                 speed: "180 Km/hr",
                 fuel: "1000cc",
@@ -70,12 +65,17 @@ export default new Vuex.Store({
                 type: "Automatic",
                 desc: "This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with"
             },
-        ]
+        ],
+        hiredVehicle: ""
     },
     mutations: {
-
+        SET_HIRED_VEHICLE(state, vehicle_id) {
+            state.hiredVehicle = vehicle_id
+        }
     },
     actions: {
-
+        setHiredVehicle({ commit }, vehicle_id) {
+            commit('SET_HIRED_VEHICLE', vehicle_id);
+        }
     }
 });

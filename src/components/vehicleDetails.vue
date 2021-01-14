@@ -1,6 +1,10 @@
 <template>
     <Page>
-        <ActionBar title="Vehicle Details" class="title" />
+        <ActionBar title="Vehicle Details" class="title" >
+            <NavigationButton text="Go back" android.systemIcon="ic_menu_back" @tap="$navigateBack" />
+            <ActionItem :text="selectedVehicle" fontSize="18" color="white" />
+            <ActionItem @tap="goHomePage" android.systemIcon="ic_menu_home" text="Home" android.position="actionBar" />
+        </ActionBar>
 
         <GridLayout rows="auto, auto, 50, auto, *" class="main-content">
             <Image :src="vehicle.image" row="0" class="image" />
@@ -8,22 +12,16 @@
             <FlexboxLayout orientation="horizontal" row="2" class="extra" >
                 <Label>
                     <FormattedString>
-                        <Span text="Price: " class="text-span" />
-                        <Span :text="vehicle.price" class="text price" />
-                    </FormattedString>
-                </Label>
-                <Button text="Hire Vehicle" class="hire" @tap="hireVehicle" />
-            </FlexboxLayout>
-            <StackLayout row="3">
-                <Label>
-                    <FormattedString>
                         <Span text="Model: " class="text-span" />
                         <Span :text="vehicle.model" class="text" />
                     </FormattedString>
                 </Label>
+                <Button :text="[ isHired ? 'Hired' : 'Hire Vehicle']" class="hire" :class='[ isHired ? "btn-hired" : "btn-not-hired" ]' @tap="hireVehicle" />
+            </FlexboxLayout>
+            <StackLayout row="3">
                 <Label>
                     <FormattedString>
-                        <Span text="NO of Seats: " class="text-span" />
+                        <Span text="No. of Seats: " class="text-span" />
                         <Span :text="vehicle.no_of_seats" class="text" />
                     </FormattedString>
                 </Label>
@@ -62,18 +60,33 @@
 </template>
 
 <script>
+    import homePage from './App'
+
     export default {
         props: ['vehicle'],
         data() {
             return {
-                //
+                isHired: false,
             }
         },
         methods: {
+            goHomePage() {
+                this.$navigateTo(homePage)
+            },
             hireVehicle() {
-                //
+                if(this.isHired) {
+                    this.$store.dispatch('setHiredVehicle', "")
+                } else {
+                    this.$store.dispatch('setHiredVehicle', this.vehicle.id)
+                }
+                this.isHired = !this.isHired
             }
         },
+        computed: {
+            selectedVehicle() {
+                return (this.$store.state.hiredVehicle) != "" ? this.$store.state.hiredVehicle : 0;
+            }
+        }
     }
 </script>
 
@@ -100,9 +113,6 @@
         margin: 7 0;
         font-weight: 800;
     }
-    .price {
-        margin-top: 100;
-    }
     .text {
         font-weight: 800;
     }
@@ -114,11 +124,18 @@
     }
     .hire {
         font-size: 20;
-        background-color: rgb(223, 87, 87);
+        // background-color: rgb(223, 87, 87);
         color: #ffffff;
         padding: 0 15 0 15;
         height: 38;
         border-radius: 10;
+    }
+    .btn-hired {
+        background-color:  rgb(40, 157, 73);
+        border-color: rgb(40, 157, 73);
+    }
+    .btn-not-hired {
+        background-color:  rgb(223, 87, 87);
     }
     .desc {
         font-size: 20;
