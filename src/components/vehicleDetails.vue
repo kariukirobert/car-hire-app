@@ -75,16 +75,19 @@
             },
             hireVehicle() {
                 if(this.isHired) {
-                    this.$store.dispatch('setHiredVehicle', "")
+                    this.$store.dispatch('remove_selected_hire_vehicle', this.vehicle.id)
                 } else {
-                    this.$store.dispatch('setHiredVehicle', this.vehicle.id)
+                    this.$store.dispatch('insert_selected_hire_vehicle', this.vehicle.id)
                 }
                 this.isHired = !this.isHired
             }
         },
         computed: {
             selectedVehicle() {
-                return (this.$store.state.hiredVehicle) != "" ? this.$store.state.hiredVehicle : 0;
+                if(this.$store.state.selectedHireVehicles.some(vehicle => vehicle.vehicle_id === this.vehicle.id)) {
+                    this.isHired = true
+                }
+                return this.$store.state.selectedHireVehicles.length;
             }
         }
     }

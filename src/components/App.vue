@@ -1,5 +1,5 @@
 <template>
-    <Page>
+    <Page @loaded="pageLoaded">
 
         <ActionBar>
             <GridLayout width="100%" columns="*, 100">
@@ -18,7 +18,7 @@
             </StackLayout>            
         </RadSideDrawer> -->
         <GridLayout rows="55, *">
-            <SearchBar hint="Search Vehicle" class="search" row="0" @submit="onSubmit" @loaded="onSearchBarLoaded" @returnKeyType="search" />
+            <SearchBar hint="Search Vehicle" class="search" row="0" @submit="onSubmit" @loaded="onSearchBarLoaded" />
 
             <ListView for="vehicle in vehicles" row="1" @itemTap="vehicleDetails">
                 <v-template>
@@ -48,6 +48,12 @@
         }
     },
     methods: {
+        pageLoaded() {
+            this.$store.dispatch('initialize_database')
+            setTimeout(() => {
+                this.$store.dispatch('load_selected_hire_vehicles')
+            }, 100);
+        },
         onSearchBarLoaded(event) {
             event.object.dismissSoftInput();
             event.object.android.clearFocus();
@@ -63,7 +69,7 @@
     },
     computed: {
         selectedVehicle() {
-            return (this.$store.state.hiredVehicle) != "" ? this.$store.state.hiredVehicle : 0;
+            return this.$store.state.selectedHireVehicles.length;
         }
     }
   }
